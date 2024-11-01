@@ -7,8 +7,9 @@
 <body>
   <button id="googleSignInBtn">Sign in with Google</button>
   <div id="result"></div>
-
+  
   <script>
+    // Function to handle Google sign-in
     function googleSignIn() {
       const clientId = "324731015609-g77aihc1h6rlmfhjdjt5ueansjv2h7i7.apps.googleusercontent.com";
 
@@ -26,6 +27,7 @@
             <p>Name: ${profile.getName()}</p>
             <p>Image URL: <img src="${profile.getImageUrl()}" alt="Profile Picture"></p>
             <p>Email: ${profile.getEmail()}</p>
+            <p>Sign-in complete! Welcome to our website.</p> <!-- Completion message -->
           `;
         }).catch((error) => {
           console.error(error);
@@ -35,8 +37,8 @@
       });
     }
 
-    // Call the googleSignIn function to initiate the sign-in process
-    googleSignIn();
+    // Add event listener to button to trigger sign-in on click
+    document.getElementById('googleSignInBtn').addEventListener('click', googleSignIn);
   </script>
 </body>
 </html>
