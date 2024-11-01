@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Sign-In</title>
+  <script src="https://apis.google.com/js/platform.js"></script>
+</head>
+<body>
+  <button id="googleSignInBtn">Sign in with Google</button>
+  <div id="result"></div>
+
+  <script>
+    function googleSignIn() {
+      const clientId = "YOUR_CLIENT_ID";
+
+      gapi.load('auth2', () => {
+        const auth2 = gapi.auth2.init({
+          client_id: clientId,
+          scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
+        });
+
+        auth2.signIn().then((googleUser) => {
+          const profile = googleUser.getBasicProfile();
+          const resultDiv = document.getElementById('result');
+          resultDiv.innerHTML = `
+            <p>ID: ${profile.getId()}</p>
+            <p>Name: ${profile.getName()}</p>
+            <p>Image URL: <img src="${profile.getImageUrl()}" alt="Profile Picture"></p>
+            <p>Email: ${profile.getEmail()}</p>
+          `;
+        }).catch((error) => {
+          console.error(error);
+          const resultDiv = document.getElementById('result');
+          resultDiv.innerHTML = 'Error signing in: ' + error.message;
+        });
+      });
+    }
+
+    // Call the googleSignIn function to initiate the sign-in process
+    googleSignIn();
+  </script>
+</body>
+</html>
