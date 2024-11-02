@@ -2,43 +2,35 @@
 <html>
 <head>
   <title>Google Sign-In</title>
-  <script src="https://apis.google.com/js/platform.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="324731015609-ucd9fsvln0bs92ijqml9hh3sacpfb121.apps.googleusercontent.com">
 </head>
 <body>
-  <button id="googleSignInBtn">Sign in with Google</button>
+  <div class="g-signin2" data-onsuccess="onSignIn"></div>
   <div id="result"></div>
-  
+
   <script>
-    // Function to handle Google sign-in
-    function googleSignIn() {
-      const clientId = "324731015609-ucd9fsvln0bs92ijqml9hh3sacpfb121.apps.googleusercontent.com";
-
-      gapi.load('auth2', () => {
-        const auth2 = gapi.auth2.init({
-          client_id: clientId,
-          scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
-        });
-
-        auth2.signIn().then((googleUser) => {
-          const profile = googleUser.getBasicProfile();
-          const resultDiv = document.getElementById('result');
-          resultDiv.innerHTML = `
-            <p>ID: ${profile.getId()}</p>
-            <p>Name: ${profile.getName()}</p>
-            <p>Image URL: <img src="${profile.getImageUrl()}" alt="Profile Picture"></p>
-            <p>Email: ${profile.getEmail()}</p>
-            <p>Sign-in complete! Welcome to our website.</p> <!-- Completion message -->
-          `;
-        }).catch((error) => {
-          console.error(error);
-          const resultDiv = document.getElementById('result');
-          resultDiv.innerHTML = 'Error signing in: ' + error.message;
-        });
-      });
+    function onSignIn(googleUser) {
+      // Retrieve profile information
+      const profile = googleUser.getBasicProfile();
+      document.getElementById('result').innerHTML = `
+        <p>ID: ${profile.getId()}</p>
+        <p>Name: ${profile.getName()}</p>
+        <p>Image URL: <img src="${profile.getImageUrl()}" alt="Profile Picture"></p>
+        <p>Email: ${profile.getEmail()}</p>
+      `;
     }
 
-    // Add event listener to button to trigger sign-in on click
-    document.getElementById('googleSignInBtn').addEventListener('click', googleSignIn);
+    function signOut() {
+      const auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(() => {
+        document.getElementById('result').innerHTML = "User signed out.";
+        console.log("User signed out.");
+      });
+    }
   </script>
+
+  <!-- Sign-out button -->
+  <button onclick="signOut()">Sign out</button>
 </body>
 </html>
