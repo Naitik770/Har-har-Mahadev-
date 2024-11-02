@@ -14,9 +14,8 @@
       // Retrieve profile information
       const profile = googleUser.getBasicProfile();
       document.getElementById('result').innerHTML = `
-        <p>ID: ${profile.getId()}</p>
+        <p>Signed in as:</p>
         <p>Name: ${profile.getName()}</p>
-        <p>Image URL: <img src="${profile.getImageUrl()}" alt="Profile Picture"></p>
         <p>Email: ${profile.getEmail()}</p>
       `;
     }
